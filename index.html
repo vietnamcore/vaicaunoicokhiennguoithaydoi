@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Karaoke One Word</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: 'Arial Black', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #word {
+      font-size: 3em;
+      text-align: center;
+      text-shadow: 0 0 15px #fff, 0 0 30px #0ff;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    #word.show {
+      opacity: 1;
+    }
+    video, audio {
+      display: none; /* Ẩn player, chỉ nghe nhạc */
+    }
+  </style>
+</head>
+<body>
+  <!-- Nhạc -->
+  <video id="song" autoplay>
+    <source src="song.mp4" type="video/mp4">
+  </video>
+
+  <!-- Chữ hiển thị -->
+  <div id="word"></div>
+
+  <script>
+    // Lyrics bạn đưa
+    const lyricsText = `Có phải vì anh
+Vẫn thường vô ý
+Chẳng suy nghĩ, vài lần khiến em u sầu
+Có phải vì anh
+Trót vài câu nói
+Chạm vào nơi niềm đau mà người luôn chôn giấu
+Vài câu nói có khiến người thay đổi?
+Có khiến bờ môi ấm êm?
+Nay chỉ còn trong nỗi nhớ`;
+
+    const words = lyricsText.split(/\s+/); // tách từng chữ
+    const wordBox = document.getElementById("word");
+    const song = document.getElementById("song");
+
+    song.onplay = () => {
+      const duration = song.duration || 120; // nếu chưa load thì mặc định 120s
+      const interval = (duration / words.length) * 1000;
+
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i < words.length) {
+          wordBox.textContent = words[i];
+          wordBox.classList.remove("show");
+          setTimeout(() => wordBox.classList.add("show"), 50);
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, interval);
+    };
+  </script>
+</body>
+</html>
